@@ -1,4 +1,5 @@
 import "./ChessBoardModule.css";
+import PeshkaWhite from "../images/free-icon-pawn-497273 (2).png";
 
 const ChessBoard = () => {
   const squares = [];
@@ -7,13 +8,16 @@ const ChessBoard = () => {
     for (let col = 0; col < 8; col++) {
       const squareColor = (row + col) % 2 === 0 ? "white" : "grey";
       squares.push(
-        <div key={`${row}-${col}`} className={`square ${squareColor}`}></div>
+        <div key={`${row}-${col}`} className={`square ${squareColor}`}>
+          {PeshkaWhite}
+        </div>
       );
     }
   }
+
   return (
     <div>
-      <div className="chess-board">{squares}</div>;
+      <div className="chess-board">{squares}</div>
     </div>
   );
 };

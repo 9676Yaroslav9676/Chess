@@ -9,7 +9,7 @@ const ChessBoard = () => {
       const squareColor = (row + col) % 2 === 0 ? "white" : "grey";
       squares.push(
         <div key={`${row}-${col}`} className={`square ${squareColor}`}>
-          {PeshkaWhite}
+          <img src={PeshkaWhite} alt="" />
         </div>
       );
     }

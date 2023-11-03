@@ -14,6 +14,11 @@ const ChessBoard = () => {
     ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"],
   ]);
 
+  const handleFigure = (rowIndex, cellIndex) => {
+    
+     console.log(rowIndex, cellIndex)
+  }
+
   return (
     <div className={classes["chess-board"]}>
       {board.map((row, rowIndex) => {
@@ -29,7 +34,7 @@ const ChessBoard = () => {
                     isBlack ? classes["black"] : classes["white"]
                   }`}
                 >
-                  {piece && <Piece type={piece} index={rowIndex} />}
+                  {piece && <Piece onChange={() => handleFigure(rowIndex, cellIndex)} type={piece} rowIndex={rowIndex} />}
                 </div>
               );
             })}

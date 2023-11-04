@@ -15,8 +15,14 @@ const ChessBoard = () => {
   ]);
 
   const handleFigure = (rowIndex, cellIndex) => {
-    
-     console.log(rowIndex, cellIndex)
+    setBoard((prev) => {
+    let res = [...prev]
+
+    const value = res[rowIndex][cellIndex];
+    console.log(value)
+    // res[rowIndex + 1][cellIndex] = piece;
+    return res
+    })
   }
 
   return (

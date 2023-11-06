@@ -24,7 +24,7 @@ const Piece = ( { type, rowIndex, onChange }) => {
 
   return (
     
-      <img onClick={onChange}
+      <img
       src={pieceImages[type]}
       alt={type}
       className={classes["chess-piece"]}

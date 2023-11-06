@@ -14,17 +14,34 @@ const ChessBoard = () => {
     ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"],
   ]);
 
-  const handleFigure = (rowIndex, cellIndex) => {
-    setBoard((prev) => {
-    let res = [...prev]
+  const[currentCellIndex, setCurrentCellIndex] = useState(null)
 
-    const value = res[rowIndex][cellIndex];
-    console.log(value)
-    // res[rowIndex + 1][cellIndex] = piece;
-    return res
-    })
+  const dragStartHandler = (e, cellIndex) => {
+ console.log("drag", cellIndex)
+ setCurrentCellIndex(cellIndex)
   }
 
+  const dragLeaveHandler = (e) => {
+
+  }
+
+  const dragEndHandler = (e) => {
+  
+  }
+
+  const dragOverHandler = (e) => {
+    e.preventDefault()
+    e.target.style.background = "ligthgrey"
+  }
+
+  const dropHandler = (e, cellIndex) => {
+    e.preventDefault()
+   setBoard(board.map((row, rowIndex) => row.map(c => {
+   
+   }))
+   )
+  }
+ 
   return (
     <div className={classes["chess-board"]}>
       {board.map((row, rowIndex) => {
@@ -35,12 +52,18 @@ const ChessBoard = () => {
 
               return (
                 <div
+                onDragStart={(e) => dragStartHandler(e, cellIndex)}
+                onDragLeave={(e) => dragLeaveHandler(e)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDragOver={(e) => dragOverHandler(e)}
+                onDrop={(e) => dropHandler(e, cellIndex)}
+                draggable={true}
                   key={cellIndex}
                   className={`${classes["chess-cell"]} ${
                     isBlack ? classes["black"] : classes["white"]
                   }`}
                 >
-                  {piece && <Piece onChange={() => handleFigure(rowIndex, cellIndex)} type={piece} rowIndex={rowIndex} />}
+                  {piece && <Piece type={piece} rowIndex={rowIndex} />}
                 </div>
               );
             })}

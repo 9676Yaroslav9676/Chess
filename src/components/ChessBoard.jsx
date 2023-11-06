@@ -16,30 +16,29 @@ const ChessBoard = () => {
 
   const[currentCellIndex, setCurrentCellIndex] = useState(null)
 
-  const dragStartHandler = (e, cellIndex) => {
+  const dragStartHandler = (e, cellIndex) => { 
  console.log("drag", cellIndex)
  setCurrentCellIndex(cellIndex)
   }
 
   const dragLeaveHandler = (e) => {
-
+    console.log("dragLeave")
   }
 
-  const dragEndHandler = (e) => {
-  
+  const dragEndHandler = (e, cellIndex) => {
+    console.log("dragEnd", cellIndex)
   }
 
   const dragOverHandler = (e) => {
     e.preventDefault()
+    console.log("dragOver")
     e.target.style.background = "ligthgrey"
   }
 
   const dropHandler = (e, cellIndex) => {
     e.preventDefault()
-   setBoard(board.map((row, rowIndex) => row.map(c => {
+    console.log("drop", cellIndex)
    
-   }))
-   )
   }
  
   return (
@@ -54,7 +53,7 @@ const ChessBoard = () => {
                 <div
                 onDragStart={(e) => dragStartHandler(e, cellIndex)}
                 onDragLeave={(e) => dragLeaveHandler(e)}
-                onDragEnd={(e) => dragEndHandler(e)}
+                onDragEnd={(e) => dragEndHandler(e, cellIndex)}
                 onDragOver={(e) => dragOverHandler(e)}
                 onDrop={(e) => dropHandler(e, cellIndex)}
                 draggable={true}

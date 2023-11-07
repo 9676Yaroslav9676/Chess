@@ -1,46 +1,72 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Piece from "./Piece";
 import classes from "./СhessBoard.module.css";
 
 const ChessBoard = () => {
-  const [board, setBoard] = useState([
-    ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"],
-    ["pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn"],
+  const initialBoard = [
+    [
+      "rookB",
+      "knightB",
+      "bishopB",
+      "queenB",
+      "kingB",
+      "bishopB",
+      "knightB",
+      "rookB",
+    ],
+    ["pawnB", "pawnB", "pawnB", "pawnB", "pawnB", "pawnB", "pawnB", "pawnB"],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn"],
     ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"],
-  ]);
+  ];
+  const lastOveredCell = useRef(null);
+  const [board, setBoard] = useState(initialBoard);
+  const [currentCellIndex, setCurrentCellIndex] = useState(null);
 
-  const[currentCellIndex, setCurrentCellIndex] = useState(null)
+  const dragStartHandler = (e, piece, cellIndex, rowIndex) => {
+    setCurrentCellIndex({ piece, cellIndex, rowIndex });
+    e.dataTransfer.setData("text/plain", "");
+  };
 
-  const dragStartHandler = (e, cellIndex) => { 
- console.log("drag", cellIndex)
- setCurrentCellIndex(cellIndex)
-  }
-
-  const dragLeaveHandler = (e) => {
-    console.log("dragLeave")
-  }
-
-  const dragEndHandler = (e, cellIndex) => {
-    console.log("dragEnd", cellIndex)
-  }
+  const dragEndHandler = (e) => {};
 
   const dragOverHandler = (e) => {
-    e.preventDefault()
-    console.log("dragOver")
-    e.target.style.background = "ligthgrey"
-  }
+    const el = e.target.closest("#cell");
+    lastOveredCell.current = {
+      cellIndex: el.getAttribute("datacellindex"),
+      rowIndex: el.getAttribute("datarowindex"),
+    };
+    e.preventDefault();
+  };
 
-  const dropHandler = (e, cellIndex) => {
-    e.preventDefault()
-    console.log("drop", cellIndex)
-   
-  }
- 
+  const dropHandler = (e, cellIndex, rowIndex) => {
+    if (currentCellIndex) {
+      const newBoard = [...board];
+      const {
+        piece,
+        cellIndex: oldCellIndex,
+        rowIndex: oldRowIndex,
+      } = currentCellIndex;
+      console.log(lastOveredCell.current);
+      newBoard[rowIndex][cellIndex] = piece;
+      console.log(currentCellIndex);
+      newBoard[oldRowIndex][oldCellIndex] = "";
+      setBoard(newBoard);
+    }
+  };
+
+  const clickHightLighting = (e, cellIndex, rowIndex) => {
+    let cell = e.target;
+    if (cell.style.opacity === "0.7") {
+      cell.style.opacity = "1";
+    } else {
+      cell.style.opacity = "0.7";
+    }
+  };
+
   return (
     <div className={classes["chess-board"]}>
       {board.map((row, rowIndex) => {
@@ -51,13 +77,18 @@ const ChessBoard = () => {
 
               return (
                 <div
-                onDragStart={(e) => dragStartHandler(e, cellIndex)}
-                onDragLeave={(e) => dragLeaveHandler(e)}
-                onDragEnd={(e) => dragEndHandler(e, cellIndex)}
-                onDragOver={(e) => dragOverHandler(e)}
-                onDrop={(e) => dropHandler(e, cellIndex)}
-                draggable={true}
+                  onClick={(e) => clickHightLighting(e, cellIndex, rowIndex)}
+                  onDragStart={(e) =>
+                    dragStartHandler(e, piece, cellIndex, rowIndex)
+                  }
+                  onDragEnd={(e) => dragEndHandler(e, cellIndex, rowIndex)}
+                  onDragOver={(e) => dragOverHandler(e)}
+                  onDrop={(e) => dropHandler(e, cellIndex, rowIndex)}
+                  draggable={true}
+                  datacellindex={cellIndex}
+                  datarowindex={rowIndex}
                   key={cellIndex}
+                  id="cell"
                   className={`${classes["chess-cell"]} ${
                     isBlack ? classes["black"] : classes["white"]
                   }`}

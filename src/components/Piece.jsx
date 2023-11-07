@@ -12,25 +12,28 @@ import KingWhite from "../images/Новый проект (18).png";
 import KingBlack from "../images/Новый проект (9).png";
 import classes from "./СhessBoard.module.css";
 
-const Piece = ( { type, rowIndex, onChange }) => {
+const Piece = ({ type }) => {
   const pieceImages = {
-    pawn: rowIndex > 2 ? PeshkaWhite : PeshkaBlack,
-    rook: rowIndex > 2 ? TuraWhite : TuraBlack,
-    knight: rowIndex > 2 ? KnigthWhite : KnigthBlack,
-    bishop: rowIndex > 2 ? BishopWhite : BishopBlack,
-    queen: rowIndex > 2 ? QueenWhite : QueenBlack,
-    king: rowIndex > 2 ? KingWhite : KingBlack,
+    pawn: PeshkaWhite,
+    pawnB: PeshkaBlack,
+    rook: TuraWhite,
+    rookB: TuraBlack,
+    knight: KnigthWhite,
+    knightB: KnigthBlack,
+    bishop: BishopWhite,
+    bishopB: BishopBlack,
+    queen: QueenWhite,
+    queenB: QueenBlack,
+    king: KingWhite,
+    kingB: KingBlack,
   };
 
   return (
-    
-      <img
+    <img
       src={pieceImages[type]}
       alt={type}
       className={classes["chess-piece"]}
     />
-    
-    
   );
 };
 

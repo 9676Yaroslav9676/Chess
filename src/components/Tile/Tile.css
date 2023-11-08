@@ -1,0 +1,12 @@
+.tile {
+  width: 75px;
+  height: 75px;
+}
+
+.white {
+  background-color: rgb(231, 194, 200);
+}
+
+.black {
+  background-color: rgb(97, 90, 90);
+}

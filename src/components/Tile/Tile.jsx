@@ -3,7 +3,7 @@ import "./Tile.css";
 const Tile = ({ number, image }) => {
   if (number % 2 === 0) {
     return (
-      <div className="tile black">
+      <div className="tile white">
         {image && (
           <div
             style={{ backgroundImage: `url(${image})` }}
@@ -14,7 +14,7 @@ const Tile = ({ number, image }) => {
     );
   } else {
     return (
-      <div className="tile white">
+      <div className="tile black">
         {image && (
           <div
             style={{ backgroundImage: `url(${image})` }}

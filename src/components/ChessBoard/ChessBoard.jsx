@@ -77,10 +77,11 @@ const ChessBoard = () => {
     const element = e.target;
     const chessBoard = chessBoardRef.current;
     if (element.classList.contains("chess-piece") && chessBoard) {
-      setGridX(Math.floor((e.clientX - chessBoard.offsetLeft) / 100));
+      setGridX(Math.floor((e.clientX - chessBoard.offsetLeft) / 75));
       setGridY(
-        Math.abs(Math.ceil((e.clientY - chessBoard.offsetTop - 800) / 100))
+        Math.abs(Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75))
       );
+      console.log(gridX, gridY)
 
       const x = e.clientX - 50;
       const y = e.clientY - 50;
@@ -125,14 +126,16 @@ const ChessBoard = () => {
   const handleUpPiece = (e) => {
     const chessBoard = chessBoardRef.current;
     if (activePiece && chessBoard) {
-      const x = Math.floor((e.clientX - chessBoard.offsetLeft) / 100);
+      const x = Math.floor((e.clientX - chessBoard.offsetLeft) / 75);
 
       const y = Math.abs(
-        Math.ceil((e.clientY - chessBoard.offsetTop - 800) / 100)
+        Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75)
       );
 
       setPieces((value) => {
+        
         const pieces = value.map((p) => {
+          
           if (p.x === gridX && p.y === gridY) {
             p.x = x;
             p.y = y;

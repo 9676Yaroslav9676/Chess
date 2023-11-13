@@ -118,7 +118,7 @@ const ChessBoard = () => {
       setGridY(
         Math.abs(Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75))
       );
-      console.log(gridX, gridY)
+      console.log(gridX, gridY);
 
       const x = e.clientX - 50;
       const y = e.clientY - 50;
@@ -164,18 +164,12 @@ const ChessBoard = () => {
     const chessBoard = chessBoardRef.current;
     if (activePiece && chessBoard) {
       const x = Math.floor((e.clientX - chessBoard.offsetLeft) / 75);
-<<<<<<< HEAD
-=======
-
->>>>>>> f5a66f1a096770918d627c7405fbbc92cadd7727
       const y = Math.abs(
         Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75)
       );
 
       setPieces((value) => {
-        
         const pieces = value.map((p) => {
-          
           if (p.x === gridX && p.y === gridY) {
             const validMove = referee.isValidMovie(
               gridX,

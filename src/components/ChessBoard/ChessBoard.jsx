@@ -118,7 +118,6 @@ const ChessBoard = () => {
       setGridY(
         Math.abs(Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75))
       );
-      console.log(gridX, gridY);
 
       const x = e.clientX - 50;
       const y = e.clientY - 50;
@@ -168,32 +167,40 @@ const ChessBoard = () => {
         Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75)
       );
 
-      setPieces((value) => {
-        const pieces = value.map((p) => {
-          if (p.x === gridX && p.y === gridY) {
-            const validMove = referee.isValidMovie(
-              gridX,
-              gridY,
-              x,
-              y,
-              p.type,
-              p.team,
-              value
-            );
+      const currentPiece = pieces.find((p) => p.x === gridX && p.y === gridY);
+      const attackedPiece = pieces.find((p) => p.x === x && p.y === y);
 
-            if (validMove) {
-              p.x = x;
-              p.y = y;
-            } else {
-              activePiece.style.position = "relative";
-              activePiece.style.removeProperty("top");
-              activePiece.style.removeProperty("left");
+      if (currentPiece) {
+        const validMove = referee.isValidMovie(
+          gridX,
+          gridY,
+          x,
+          y,
+          currentPiece.type,
+          currentPiece.team,
+          pieces
+        );
+
+        if (validMove) {
+          const updatePieces = pieces.reduce((results, piece) => {
+            if (piece.x === gridX && piece.y === gridY) {
+              piece.x = x;
+              piece.y = y;
+              results.push(piece);
+            } else if (!(piece.x === x && piece.y === y)) {
+              results.push(piece);
             }
-          }
-          return p;
-        });
-        return pieces;
-      });
+            console.log(results);
+            return results;
+          }, []);
+
+          setPieces(updatePieces);
+        } else {
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
+        }
+      }
       setActivePiece(null);
     }
   };

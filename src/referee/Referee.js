@@ -23,6 +23,24 @@ export default class Referee {
     }
   };
 
+  isEnPassantMove = (px, py, x, y, type, team, boardState) => {
+    const pawnDirection = team === TeamTypes.OPPONENT ? 1 : -1;
+
+    if (type === "pawn") {
+      if ((x - px === -1 || x - px === 1) && y - py === pawnDirection) {
+        const piece = boardState.find(
+          (p) => p.x === x && p.y === y - pawnDirection && p.enPassant
+        );
+        console.log(piece);
+        if (piece) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   isValidMovie = (px, py, x, y, type, team, boardState) => {
     if (type === "pawn") {
       const specialRow = team === TeamTypes.OPPONENT ? 1 : 6;

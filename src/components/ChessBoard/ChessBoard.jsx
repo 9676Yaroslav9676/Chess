@@ -119,8 +119,8 @@ const ChessBoard = () => {
         Math.abs(Math.ceil((e.clientY - chessBoard.offsetTop - 600) / 75))
       );
 
-      const x = e.clientX - 50;
-      const y = e.clientY - 50;
+      const x = e.clientX - 37.5;
+      const y = e.clientY - 37.5;
       element.style.position = "absolute";
       element.style.left = `${x}px`;
       element.style.top = `${y}px`;
@@ -137,8 +137,8 @@ const ChessBoard = () => {
       const minY = chessBoardRect.top - 10;
       const maxX = chessBoardRect.right - 57;
       const maxY = chessBoardRect.bottom - 60;
-      const x = e.clientX - 50;
-      const y = e.clientY - 50;
+      const x = e.clientX - 37.5;
+      const y = e.clientY - 37.5;
       activePiece.style.position = "absolute";
 
       if (x < minX) {
@@ -181,16 +181,52 @@ const ChessBoard = () => {
           pieces
         );
 
-        if (validMove) {
+        const isEnPassantMove = referee.isEnPassantMove(
+          gridX,
+          gridY,
+          x,
+          y,
+          currentPiece.type,
+          currentPiece.team,
+          pieces
+        );
+
+        const pawnDirection = currentPiece.team === TeamTypes.OPPONENT ? 1 : -1;
+        console.log(isEnPassantMove);
+        if (isEnPassantMove) {
           const updatePieces = pieces.reduce((results, piece) => {
             if (piece.x === gridX && piece.y === gridY) {
+              piece.enPassant = false;
+              piece.x = x;
+              piece.y = y;
+              results.push(piece);
+            } else if (!(piece.x === x && piece.y === y - pawnDirection)) {
+              if (piece.type === "pawn") {
+                piece.enPassant = false;
+              }
+              results.push(piece);
+            }
+            return results;
+          }, []);
+
+          setPieces(updatePieces);
+        } else if (validMove) {
+          const updatePieces = pieces.reduce((results, piece) => {
+            if (piece.x === gridX && piece.y === gridY) {
+              if (Math.abs(gridY - y) === 2 && piece.type === "pawn") {
+                piece.enPassant = true;
+              } else {
+                piece.enPassant = false;
+              }
               piece.x = x;
               piece.y = y;
               results.push(piece);
             } else if (!(piece.x === x && piece.y === y)) {
+              if (piece.type === "pawn") {
+                piece.enPassant = false;
+              }
               results.push(piece);
             }
-            console.log(results);
             return results;
           }, []);
 

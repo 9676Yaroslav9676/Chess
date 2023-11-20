@@ -20,6 +20,7 @@ const ChessBoard = () => {
   const referee = new Referee();
 
   const handleGrabPiece = (e) => {
+    
     const element = e.target;
     const chessBoard = chessBoardRef.current;
     if (element.classList.contains("chess-piece") && chessBoard) {

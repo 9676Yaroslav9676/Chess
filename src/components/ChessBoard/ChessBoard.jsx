@@ -11,16 +11,18 @@ import {
   initialBoardState,
   samePosition,
 } from "../../Constans";
+import Modal from "../Modal";
 
 const ChessBoard = () => {
   const [activePiece, setActivePiece] = useState(null);
+  const [promotionPawn, setPromotionPawn] = useState();
   const [grabPosition, setGrabPosition] = useState({ x: -1, y: -1 });
   const [pieces, setPieces] = useState(initialBoardState);
+  const modalRef = useRef(null);
   const chessBoardRef = useRef(null);
   const referee = new Referee();
 
   const handleGrabPiece = (e) => {
-    
     const element = e.target;
     const chessBoard = chessBoardRef.current;
     if (element.classList.contains("chess-piece") && chessBoard) {
@@ -128,6 +130,14 @@ const ChessBoard = () => {
                 piece.type === PieceTypes.PAWN;
               piece.position.x = x;
               piece.position.y = y;
+
+              let promotionRow = piece.team === TeamTypes.OPPONENT ? 7 : 0;
+
+              if (y === promotionRow) {
+                modalRef.current?.classList.remove("hidden");
+                setPromotionPawn(piece);
+              }
+
               results.push(piece);
             } else if (!samePosition(piece.position, { x, y })) {
               if (piece.type === PieceTypes.PAWN) {
@@ -149,6 +159,11 @@ const ChessBoard = () => {
     }
   };
 
+  const promotePawn = (type) => {
+    modalRef.current?.classList.add("hidden");
+    console.log(promotionPawn);
+  };
+
   let board = [];
 
   for (let j = VERTICAL_AXIS.length - 1; j >= 0; j--) {
@@ -164,16 +179,19 @@ const ChessBoard = () => {
     }
   }
   return (
-    <div
-      onMouseUp={handleUpPiece}
-      onMouseMove={handleMovePiece}
-      onMouseDown={handleGrabPiece}
-      className="chess-board"
-      id="chessBoard"
-      ref={chessBoardRef}
-    >
-      {board}
-    </div>
+    <>
+      <Modal onChange={() => promotePawn()} ref={modalRef} />
+      <div
+        onMouseUp={handleUpPiece}
+        onMouseMove={handleMovePiece}
+        onMouseDown={handleGrabPiece}
+        className="chess-board"
+        id="chessBoard"
+        ref={chessBoardRef}
+      >
+        {board}
+      </div>
+    </>
   );
 };
 

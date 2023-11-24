@@ -6,6 +6,8 @@ import {
   rookMove,
   queenMove,
   kingMove,
+  getPossiblePawnMoves,
+  getPossibleKnightMoves,
 } from "./rules";
 export default class Referee {
   isEnPassantMove = (
@@ -78,5 +80,16 @@ export default class Referee {
     }
 
     return validMove;
+  };
+
+  getValidMovies = (piece, boardState) => {
+    switch (piece.type) {
+      case PieceTypes.PAWN:
+        return getPossiblePawnMoves(piece, boardState);
+      case PieceTypes.KNIGHT:
+        return getPossibleKnightMoves(piece, boardState);
+      default:
+        return [];
+    }
   };
 }

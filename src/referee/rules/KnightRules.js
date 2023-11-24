@@ -32,3 +32,21 @@ export const knightMove = (
   }
   return false;
 };
+
+export const getPossibleKnightMoves = (knight, boardState) => {
+  const possibleMovies = [];
+  for (let i = -1; i < 2; i += 2) {
+    for (let j = -1; j < 2; i += 2) {
+      const verticalMove = {
+        x: knight.position.x + j,
+        y: knight.position.y + i * 2,
+      };
+      const horizontalMove = {
+        x: knight.position.x + i * 2,
+        y: knight.position.y + j,
+      };
+    }
+  }
+
+  return possibleMovies;
+};
